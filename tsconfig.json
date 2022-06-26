@@ -11,6 +11,10 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "noImplicitReturns": false,
+    "strictNullChecks":false,
+    "noImplicitReturns": false,
+    "strictNullChecks": false
   }
 }
