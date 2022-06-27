@@ -34,5 +34,5 @@ functions:
         method: any
 
 custom:
-    optimize:
+  optimize:
         external: ['swagger-ui-dist']

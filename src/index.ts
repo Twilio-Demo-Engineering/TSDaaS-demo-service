@@ -2,6 +2,8 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+// import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { PrismaClient } from '@prisma/client';
 import { APIGatewayProxyHandler, Context } from 'aws-lambda';
 import * as awsServerlessExpress from 'aws-serverless-express';
 import * as express from 'express';
@@ -17,6 +19,8 @@ import { AppModule } from './app.module';
 
 let cachedServer: Server;
 let cachedLoggers: any;
+let cachedSwagger: any;
+export let cachedPrismaClient: PrismaClient;
 
 const setupSwagger = (app: INestApplication) => {
   const options = new DocumentBuilder()
@@ -26,6 +30,7 @@ const setupSwagger = (app: INestApplication) => {
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
+  return app;
 };
 
 const createLoggers = (context: Context) => {
@@ -65,28 +70,40 @@ const createLoggers = (context: Context) => {
   return { nestLogger, expressLogger };
 };
 
-const bootstrapServer = async (context: Context): Promise<Server> => {
-  const expressApp = express();
-  expressApp.use(cachedLoggers.expressLogger);
-  const adapter = new ExpressAdapter(expressApp);
+let cachedExpress, cachedExpressAdapter, cachedNestApp;
+
+const bootstrapServer = async (): Promise<Server> => {
+  if (!cachedPrismaClient) {
+    cachedPrismaClient = new PrismaClient();
+    cachedPrismaClient.$connect();
+  }
+  if (!cachedExpress) {
+    cachedExpress = express();
+    // expressApp.use(cachedLoggers.expressLogger);
+    cachedExpressAdapter = new ExpressAdapter(cachedExpressAdapter);
+  }
+  if (!cachedNestApp) {
+    cachedNestApp = await NestFactory.create(AppModule, cachedExpressAdapter);
+    cachedNestApp.useGlobalPipes(new ValidationPipe({ transform: true }));
+    // app.useLogger(cachedLoggers.nestLogger);
+    cachedNestApp.enableCors();
+    // if (!cachedSwagger) {
+    //   cachedSwagger = setupSwagger(cachedNestApp);
+    // }
+
+    await cachedNestApp.init();
+  }
 
   // making winston logger default application logger
-  const app = await NestFactory.create(AppModule, adapter);
-  app.useGlobalPipes(new ValidationPipe({ transform: true }));
-  app.useLogger(cachedLoggers.nestLogger);
-  app.enableCors();
-  setupSwagger(app);
-
-  await app.init();
-  return awsServerlessExpress.createServer(expressApp);
+  return awsServerlessExpress.createServer(cachedExpress);
 };
 
 export const handler: APIGatewayProxyHandler = async (event, context) => {
-  if (!cachedLoggers) {
-    cachedLoggers = createLoggers(context);
-  }
+  // if (!cachedLoggers) {
+  //   cachedLoggers = createLoggers(context);
+  // }
   if (!cachedServer) {
-    cachedServer = await bootstrapServer(context);
+    cachedServer = await bootstrapServer();
   }
 
   if (event.path === '/api') {

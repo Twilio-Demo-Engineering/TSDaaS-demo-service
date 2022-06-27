@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "nest build",
+    "build": "nest build --webpack --tsc",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -61,6 +61,7 @@
     "serverless-localstack": "^0.4.36",
     "serverless-offline": "^6.9.0",
     "serverless-sam": "^0.2.0",
+    "serverless-webpack": "^5.7.1",
     "source-map-support": "^0.5.20",
     "supertest": "^6.1.6",
     "swagger-ui-express": "^4.3.0",

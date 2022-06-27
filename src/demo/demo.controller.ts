@@ -43,7 +43,7 @@ export class DemoController {
   @ApiResponse({ status: 200, type: DemoDto })
   async findOne(@Param('id') id: string): Promise<DemoDto> {
     const match = await this.demoService.findOne(id, null);
-    return match;
+    return new DemoDto(match);
   }
 
   @Patch(':id')
@@ -55,7 +55,7 @@ export class DemoController {
     const updated = await this.demoService.update(id, updateDemoDto, {
       crudQuery,
     });
-    return updated;
+    return new DemoDto(updated);
   }
 
   @Delete(':id')
