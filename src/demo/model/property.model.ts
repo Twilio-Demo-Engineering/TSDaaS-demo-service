@@ -1,7 +1,7 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
 import { Exclude } from 'class-transformer';
-import { IsDate, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
 
 const _property = Prisma.validator<Prisma.PropertyArgs>()({
   include: { demo: false },
@@ -14,8 +14,7 @@ export class PropertyDto implements Partial<Property> {
     Object.assign(this, init);
   }
 
-  @IsString()
-  @ApiPropertyOptional({ type: String })
+  @Exclude()
   id?: string;
 
   @IsString()
@@ -26,17 +25,16 @@ export class PropertyDto implements Partial<Property> {
   @ApiProperty()
   value: string;
 
+  @Exclude()
+  safe: boolean;
+
   @IsString()
   @Exclude()
   demoId?: string;
 
   @Exclude()
-  @IsDate()
-  @ApiPropertyOptional()
   created_at?: Date;
 
   @Exclude()
-  @IsDate()
-  @ApiPropertyOptional()
   updated_at?: Date;
 }

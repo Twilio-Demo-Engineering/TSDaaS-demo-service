@@ -1,14 +1,18 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { DemoSolution, Prisma, Property } from '@prisma/client';
+import { DemoSolution, Prisma } from '@prisma/client';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { IsArray, IsString } from 'class-validator';
 import { DemoSolutionDto } from './demoSolution.model';
 import { DemoTag } from './demoTag.model';
-import { PropertyDto } from './property.model';
+import { Property, PropertyDto } from './property.model';
 import { TagDto } from './tag.model';
 
 const _demo = Prisma.validator<Prisma.DemoArgs>()({
-  include: { properties: true, demoTags: true, solutions: true },
+  include: {
+    properties: true,
+    demoTags: true,
+    solutions: true,
+  },
 });
 
 export type Demo = Prisma.DemoGetPayload<typeof _demo>;
@@ -60,7 +64,9 @@ export class DemoDto implements Partial<Demo> {
   @Type(() => PropertyDto)
   @Expose({ name: 'properties' })
   get demoProperties() {
-    return this.properties.map((prop) => new PropertyDto(prop));
+    return this.properties
+      .filter((prop) => !prop.safe)
+      .map((prop) => new PropertyDto(prop));
   }
 
   @IsArray()
@@ -96,6 +102,27 @@ export class PostDemoDto {
   @ApiProperty({ type: [PropertyDto] })
   properties: PropertyDto[];
 
+  @ApiProperty({ type: [PropertyDto] })
+  safeProperties: PropertyDto[];
+
   @ApiProperty({ type: [TagDto] })
   tags: TagDto[];
+}
+
+export class UpdateDemoDto {
+  @IsString()
+  @ApiProperty()
+  name: string;
+
+  @IsString()
+  @ApiProperty()
+  urlPrefix: string;
+
+  @IsString()
+  @ApiProperty()
+  authors: string;
+
+  @IsString()
+  @ApiProperty()
+  revisionNumber: string;
 }

@@ -14,8 +14,6 @@ export class DemoSolutionDto implements Partial<DemoSolution> {
     Object.assign(this, init);
   }
 
-  @IsString()
-  @ApiPropertyOptional()
   @Exclude()
   id?: string;
 

@@ -9,8 +9,18 @@ export class DemoService extends PrismaCrudService {
   constructor(private db: DatabaseService) {
     super({
       model: 'demo',
-      allowedJoins: ['demoTags', 'properties', 'demoTags.tag', 'solutions'],
-      defaultJoins: ['demoTags', 'properties', 'demoTags.tag', 'solutions'],
+      allowedJoins: [
+        'demoTags',
+        'properties',
+        'demoTags.tag',
+        'solutions',
+      ],
+      defaultJoins: [
+        'demoTags',
+        'properties',
+        'demoTags.tag',
+        'solutions',
+      ],
     });
   }
 
@@ -24,6 +34,7 @@ export class DemoService extends PrismaCrudService {
       authors,
       revisionNumber,
       properties,
+      safeProperties,
       tags,
       solutions,
     } = createDemoDto;
@@ -35,7 +46,10 @@ export class DemoService extends PrismaCrudService {
         authors,
         revisionNumber,
         properties: {
-          create: properties,
+          create: [
+            ...properties.map((p) => ({ ...p, safe: false })),
+            ...safeProperties.map((sp) => ({ ...sp, safe: true })),
+          ],
         },
         demoTags: {
           create: tags.map((dt) => ({

@@ -1,6 +1,7 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
-import { IsDate, IsString } from 'class-validator';
+import { Exclude } from 'class-transformer';
+import { IsString } from 'class-validator';
 
 const _tag = Prisma.validator<Prisma.TagArgs>()({
   include: { demoTag: false },
@@ -13,19 +14,16 @@ export class TagDto implements Partial<Tag> {
     Object.assign(this, init);
   }
 
-  @IsString()
-  @ApiPropertyOptional()
+  @Exclude()
   id?: string;
 
   @IsString()
   @ApiProperty()
   name: string;
 
-  @IsDate()
-  @ApiPropertyOptional({ type: Date })
+  @Exclude()
   created_at?: Date;
 
-  @IsDate()
-  @ApiPropertyOptional({ type: Date })
+  @Exclude()
   updated_at?: Date;
 }

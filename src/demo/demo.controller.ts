@@ -13,7 +13,7 @@ import {
 import { ApiResponse } from '@nestjs/swagger';
 import { PrismaExceptionFilter } from 'configurations/database/database.exceptionFilter';
 import { DemoService } from './demo.service';
-import { DemoDto, PostDemoDto } from './model/demo.model';
+import { DemoDto, PostDemoDto, UpdateDemoDto } from './model/demo.model';
 
 @Controller('demo')
 export class DemoController {
@@ -22,13 +22,8 @@ export class DemoController {
   @Post()
   @ApiResponse({ status: 201, type: DemoDto })
   @UseFilters(PrismaExceptionFilter)
-  async create(
-    @Body() createDemoDto: PostDemoDto,
-    @Optional() @Query('crudQuery') crudQuery?: string,
-  ): Promise<DemoDto> {
-    const created = await this.demoService.create(createDemoDto, {
-      crudQuery,
-    });
+  async create(@Body() createDemoDto: PostDemoDto): Promise<DemoDto> {
+    const created = await this.demoService.create(createDemoDto, null);
     return new DemoDto(created);
   }
 
@@ -43,19 +38,16 @@ export class DemoController {
   @ApiResponse({ status: 200, type: DemoDto })
   async findOne(@Param('id') id: string): Promise<DemoDto> {
     const match = await this.demoService.findOne(id, null);
-    return match;
+    return new DemoDto(match);
   }
 
   @Patch(':id')
   async update(
     @Param('id') id: string,
-    @Body() updateDemoDto: PostDemoDto,
-    @Query('crudQuery') crudQuery: string,
+    @Body() updateDemoDto: UpdateDemoDto,
   ): Promise<DemoDto> {
-    const updated = await this.demoService.update(id, updateDemoDto, {
-      crudQuery,
-    });
-    return updated;
+    const updated = await this.demoService.update(id, updateDemoDto, null);
+    return new DemoDto(updated);
   }
 
   @Delete(':id')
