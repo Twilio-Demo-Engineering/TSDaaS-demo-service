@@ -5,6 +5,7 @@ import { DatabaseService } from './configurations/database/database.service';
 import { DemoModule } from './demo/demo.module';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { PrismaExceptionFilter } from 'configurations/database/database.exceptionFilter';
+import { PropertyModule } from './property/property.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { PrismaExceptionFilter } from 'configurations/database/database.exceptio
       prismaService: DatabaseService,
     }),
     DemoModule,
+    PropertyModule,
   ],
   providers: [
     Logger,

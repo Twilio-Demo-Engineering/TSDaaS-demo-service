@@ -4,7 +4,7 @@ import { Exclude, Expose, Type } from 'class-transformer';
 import { IsArray, IsString } from 'class-validator';
 import { DemoSolutionDto } from './demoSolution.model';
 import { DemoTag } from './demoTag.model';
-import { Property, PropertyDto } from './property.model';
+import { Property, PropertyDto } from 'src/property/model/property.model';
 import { TagDto } from './tag.model';
 
 const _demo = Prisma.validator<Prisma.DemoArgs>()({
@@ -66,6 +66,12 @@ export class DemoDto implements Partial<Demo> {
   get demoProperties() {
     return this.properties
       .filter((prop) => !prop.safe)
+      .map((prop) => new PropertyDto(prop));
+  }
+
+  get safeDemoProperties() {
+    return this.properties
+      .filter((prop) => prop.safe)
       .map((prop) => new PropertyDto(prop));
   }
 

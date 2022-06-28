@@ -4,7 +4,7 @@ import { DatabaseService } from 'src/configurations/database/database.service';
 import { Demo, PostDemoDto } from './model/demo.model';
 import { DemoSolutionDto } from './model/demoSolution.model';
 
-@Injectable({ scope: Scope.TRANSIENT })
+@Injectable()
 export class DemoService extends PrismaCrudService {
   constructor(private db: DatabaseService) {
     super({
