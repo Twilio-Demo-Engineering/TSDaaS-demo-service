@@ -52,17 +52,17 @@ export class DemoDto implements Partial<Demo> {
   solutions: DemoSolution[];
 
   @IsArray()
-  @ApiProperty({ type: [DemoSolutionDto] })
-  @Type(() => DemoSolutionDto)
   @Expose({ name: 'solutions' })
+  @ApiProperty({ name: 'solutions', type: [DemoSolutionDto] })
+  @Type(() => DemoSolutionDto)
   get demoSolutions() {
     return this.solutions.map((s) => new DemoSolutionDto(s));
   }
 
   @IsArray()
-  @ApiProperty({ type: [PropertyDto] })
-  @Type(() => PropertyDto)
   @Expose({ name: 'properties' })
+  @ApiProperty({ name: 'properties', type: [PropertyDto] })
+  @Type(() => PropertyDto)
   get demoProperties() {
     return this.properties
       .filter((prop) => !prop.safe)
