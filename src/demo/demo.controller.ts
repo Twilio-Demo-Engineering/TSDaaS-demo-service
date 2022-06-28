@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
   Optional,
   Param,
   Patch,
@@ -20,7 +21,7 @@ export class DemoController {
   constructor(private readonly demoService: DemoService) {}
 
   @Post()
-  @ApiResponse({ status: 201, type: DemoDto })
+  @ApiResponse({ status: HttpStatus.CREATED, type: DemoDto })
   @UseFilters(PrismaExceptionFilter)
   async create(@Body() createDemoDto: PostDemoDto): Promise<DemoDto> {
     const created = await this.demoService.create(createDemoDto, null);
@@ -28,20 +29,21 @@ export class DemoController {
   }
 
   @Get()
-  @ApiResponse({ status: 200, type: [DemoDto] })
+  @ApiResponse({ status: HttpStatus.OK, type: [DemoDto] })
   async findMany(@Query('crudQuery') crudQuery: string): Promise<DemoDto[]> {
     const matches = await this.demoService.findMany({ crudQuery });
     return matches.data.map((demo) => new DemoDto(demo));
   }
 
   @Get(':id')
-  @ApiResponse({ status: 200, type: DemoDto })
+  @ApiResponse({ status: HttpStatus.OK, type: DemoDto })
   async findOne(@Param('id') id: string): Promise<DemoDto> {
     const match = await this.demoService.findOne(id, null);
     return new DemoDto(match);
   }
 
   @Patch(':id')
+  @ApiResponse({ status: HttpStatus.OK, type: DemoDto })
   async update(
     @Param('id') id: string,
     @Body() updateDemoDto: UpdateDemoDto,
@@ -51,7 +53,9 @@ export class DemoController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string, @Query('crudQuery') crudQuery: string) {
-    return this.demoService.remove(id, { crudQuery });
+  @ApiResponse({ status: HttpStatus.OK, type: Boolean })
+  async remove(@Param('id') id: string) {
+    await this.demoService.remove(id, null);
+    return true;
   }
 }

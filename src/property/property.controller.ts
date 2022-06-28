@@ -3,10 +3,11 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
   Param,
   Patch
 } from '@nestjs/common';
-import { ApiBody } from '@nestjs/swagger';
+import { ApiBody, ApiResponse } from '@nestjs/swagger';
 import { DemoService } from 'src/demo/demo.service';
 import { DemoDto } from 'src/demo/model/demo.model';
 import { PropertyDto } from 'src/property/model/property.model';
@@ -20,6 +21,7 @@ export class PropertyController {
   ) {}
 
   @Get()
+  @ApiResponse({ status: HttpStatus.OK, type: [PropertyDto] })
   async find(@Param('demoId') demoId: string): Promise<PropertyDto[]> {
     const match = new DemoDto(await this.demoService.findOne(demoId, null));
     return match.demoProperties.map((prop) => new PropertyDto(prop));
@@ -27,6 +29,7 @@ export class PropertyController {
 
   @Patch()
   @ApiBody({ type: [PropertyDto] })
+  @ApiResponse({ status: HttpStatus.CREATED, type: [PropertyDto] })
   async update(
     @Param('demoId') demoId: string,
     @Body() updateDemoProperties: PropertyDto[],
@@ -39,6 +42,7 @@ export class PropertyController {
   }
 
   @Delete(':id')
+  @ApiResponse({ status: HttpStatus.OK, type: Boolean })
   async remove(
     @Param('demoId') demoId: string,
     @Param('id') id: string,
