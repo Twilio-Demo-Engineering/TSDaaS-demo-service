@@ -1,10 +1,10 @@
-import { Module, Logger, ClassSerializerInterceptor } from '@nestjs/common';
-import { ConfigurationsModule } from './configurations/configurations.module';
+import { ClassSerializerInterceptor, Logger, Module } from '@nestjs/common';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { PrismaCrudModule } from 'nestjs-prisma-crud';
+import { ConfigurationsModule } from './configurations/configurations.module';
+import { PrismaExceptionFilter } from './configurations/database/database.exceptionFilter';
 import { DatabaseService } from './configurations/database/database.service';
 import { DemoModule } from './demo/demo.module';
-import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
-import { PrismaExceptionFilter } from 'configurations/database/database.exceptionFilter';
 import { PropertyModule } from './property/property.module';
 
 @Module({

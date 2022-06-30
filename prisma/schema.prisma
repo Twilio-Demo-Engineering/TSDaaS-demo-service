@@ -24,7 +24,7 @@ model Demo {
 model DemoSolution {
   demoId String
   name   String
-  demo   Demo   @relation(fields: [demoId], references: [id])
+  demo   Demo   @relation(fields: [demoId], references: [id], onDelete: Cascade)
 
   @@id([demoId, name])
 }
@@ -35,7 +35,7 @@ model Property {
   key    String
   value  String
   safe   Boolean @default(false)
-  demo   Demo    @relation(fields: [demoId], references: [id])
+  demo   Demo    @relation(fields: [demoId], references: [id], onDelete: Cascade)
 
   created_at DateTime? @default(now()) @db.DateTime(0)
   updated_at DateTime? @default(now()) @db.DateTime(0)
@@ -56,8 +56,8 @@ model DemoTag {
   id     String @id @default(uuid())
   demoId String
   tagId  String
-  demo   Demo   @relation(fields: [demoId], references: [id])
-  tag    Tag    @relation(fields: [tagId], references: [id])
+  demo   Demo   @relation(fields: [demoId], references: [id], onDelete: Cascade)
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
   created_at DateTime? @default(now()) @db.DateTime(0)
   updated_at DateTime? @default(now()) @db.DateTime(0)

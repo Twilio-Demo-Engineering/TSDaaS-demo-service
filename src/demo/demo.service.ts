@@ -1,6 +1,6 @@
-import { Injectable, Scope } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CrudMethodOpts, PrismaCrudService } from 'nestjs-prisma-crud';
-import { DatabaseService } from 'src/configurations/database/database.service';
+import { DatabaseService } from '../configurations/database/database.service';
 import { Demo, PostDemoDto } from './model/demo.model';
 import { DemoSolutionDto } from './model/demoSolution.model';
 
@@ -47,8 +47,8 @@ export class DemoService extends PrismaCrudService {
         revisionNumber,
         properties: {
           create: [
-            ...properties.map((p) => ({ ...p, safe: false })),
-            ...safeProperties.map((sp) => ({ ...sp, safe: true })),
+            ...(properties || []).map((p) => ({ ...p, safe: false })),
+            ...(safeProperties || []).map((sp) => ({ ...sp, safe: true })),
           ],
         },
         demoTags: {

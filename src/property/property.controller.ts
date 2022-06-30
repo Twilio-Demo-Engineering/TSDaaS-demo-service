@@ -5,13 +5,13 @@ import {
   Get,
   HttpStatus,
   Param,
-  Patch
+  Patch,
 } from '@nestjs/common';
 import { ApiBody, ApiResponse } from '@nestjs/swagger';
-import { DemoService } from 'src/demo/demo.service';
-import { DemoDto } from 'src/demo/model/demo.model';
-import { PropertyDto } from 'src/property/model/property.model';
-import { PropertyService } from './property.service';
+import { DemoService } from '../demo/demo.service';
+import { DemoDto } from '../demo/model/demo.model';
+import { PropertyDto } from '../property/model/property.model';
+import {PropertyService } from './property.service';
 
 @Controller('demo/:demoId/properties')
 export class PropertyController {

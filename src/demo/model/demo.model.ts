@@ -2,9 +2,9 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { DemoSolution, Prisma } from '@prisma/client';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { IsArray, IsString } from 'class-validator';
+import { Property, PropertyDto } from '../../property/model/property.model';
 import { DemoSolutionDto } from './demoSolution.model';
 import { DemoTag } from './demoTag.model';
-import { Property, PropertyDto } from 'src/property/model/property.model';
 import { TagDto } from './tag.model';
 
 const _demo = Prisma.validator<Prisma.DemoArgs>()({
@@ -117,18 +117,18 @@ export class PostDemoDto {
 
 export class UpdateDemoDto {
   @IsString()
-  @ApiProperty()
-  name: string;
+  @ApiPropertyOptional()
+  name?: string;
 
   @IsString()
-  @ApiProperty()
-  urlPrefix: string;
+  @ApiPropertyOptional()
+  urlPrefix?: string;
 
   @IsString()
-  @ApiProperty()
-  authors: string;
+  @ApiPropertyOptional()
+  authors?: string;
 
   @IsString()
-  @ApiProperty()
-  revisionNumber: string;
+  @ApiPropertyOptional()
+  revisionNumber?: string;
 }

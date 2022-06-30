@@ -1,10 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { DatabaseService } from 'src/configurations/database/database.service';
 import { PrismaCrudService } from 'nestjs-prisma-crud';
-import {
-  CreatePropertyDto,
-  PropertyDto,
-} from 'src/property/model/property.model';
+import { DatabaseService } from '../configurations/database/database.service';
+import { CreatePropertyDto, PropertyDto } from './model/property.model';
 
 @Injectable()
 export class PropertyService extends PrismaCrudService {
@@ -45,11 +42,17 @@ export class PropertyService extends PrismaCrudService {
       ...demoProperties
         .filter((dp) => this.isUpdatePropertyDto(dp))
         .map((dp) => {
+          const { key, value, safe } = dp;
           return this.db.property.update({
             where: {
               id: (dp as PropertyDto).id,
             },
-            data: { ...dp, updated_at: new Date() },
+            data: {
+              key,
+              value,
+              safe,
+              updated_at: new Date(),
+            },
           });
         }),
     ]);

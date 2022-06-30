@@ -23,6 +23,7 @@ const setupSwagger = (app: INestApplication) => {
     .setTitle('TSDaaS Demo Service')
     .setVersion('1.0.0')
     .addServer('http://localhost:3000/dev')
+    .addServer('https://lvaladares.sa.ngrok.io/dev')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);

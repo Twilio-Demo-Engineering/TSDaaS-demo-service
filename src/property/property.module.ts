@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { PropertyService } from './property.service';
+import { DemoModule } from '../demo/demo.module';
 import { PropertyController } from './property.controller';
-import { DemoModule } from 'src/demo/demo.module';
+import { PropertyService } from './property.service';
 
 @Module({
   controllers: [PropertyController],

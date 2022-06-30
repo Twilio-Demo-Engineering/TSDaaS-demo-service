@@ -11,7 +11,7 @@ import {
   UseFilters,
 } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
-import { PrismaExceptionFilter } from 'configurations/database/database.exceptionFilter';
+import { PrismaExceptionFilter } from '../configurations/database/database.exceptionFilter';
 import { DemoService } from './demo.service';
 import { DemoDto, PostDemoDto, UpdateDemoDto } from './model/demo.model';
 
@@ -45,7 +45,7 @@ export class DemoController {
   @ApiResponse({ status: HttpStatus.OK, type: DemoDto })
   async update(
     @Param('id') id: string,
-    @Body() updateDemoDto: UpdateDemoDto,
+    @Body() updateDemoDto: Partial<UpdateDemoDto>,
   ): Promise<DemoDto> {
     const updated = await this.demoService.update(id, updateDemoDto, null);
     return new DemoDto(updated);
