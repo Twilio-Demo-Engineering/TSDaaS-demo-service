@@ -2,6 +2,7 @@
 CREATE TABLE `Demo` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
+    `description` VARCHAR(191) NOT NULL,
     `urlPrefix` VARCHAR(191) NOT NULL,
     `authors` VARCHAR(191) NOT NULL,
     `revisionNumber` VARCHAR(191) NOT NULL,

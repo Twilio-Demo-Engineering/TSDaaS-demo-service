@@ -1,20 +1,12 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  HttpStatus,
-  Param,
-  Patch,
-} from '@nestjs/common';
-import { ApiBody, ApiResponse } from '@nestjs/swagger';
+import { Controller, Delete, Get, HttpStatus, Param } from '@nestjs/common';
+import { ApiResponse } from '@nestjs/swagger';
 import { DemoService } from '../demo/demo.service';
 import { DemoDto } from '../demo/model/demo.model';
 import { PropertyDto } from '../property/model/property.model';
 import { PropertyService } from './property.service';
 
-@Controller('demo/:demoId/properties')
-export class PropertyController {
+@Controller('demo/:demoId/safeProperties')
+export class SafePropertyController {
   constructor(
     private readonly propertyService: PropertyService,
     private readonly demoService: DemoService,
@@ -24,21 +16,7 @@ export class PropertyController {
   @ApiResponse({ status: HttpStatus.OK, type: [PropertyDto] })
   async find(@Param('demoId') demoId: string): Promise<PropertyDto[]> {
     const match = new DemoDto(await this.demoService.findOne(demoId, null));
-    return match.demoProperties.map((prop) => new PropertyDto(prop));
-  }
-
-  @Patch()
-  @ApiBody({ type: [PropertyDto] })
-  @ApiResponse({ status: HttpStatus.CREATED, type: [PropertyDto] })
-  async update(
-    @Param('demoId') demoId: string,
-    @Body() updateDemoProperties: PropertyDto[],
-  ): Promise<PropertyDto[]> {
-    const updatedProperties = await this.propertyService.upsert(
-      demoId,
-      updateDemoProperties,
-    );
-    return updatedProperties.map((prop) => new PropertyDto(prop));
+    return match.safeDemoProperties;
   }
 
   @Delete(':id')
@@ -49,7 +27,7 @@ export class PropertyController {
   ): Promise<boolean> {
     await this.propertyService.remove(id, {
       crudQuery: {
-        where: { id, demoId },
+        where: { id, demoId, safe: true },
       },
     });
     return true;

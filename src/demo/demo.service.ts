@@ -30,6 +30,7 @@ export class DemoService extends PrismaCrudService {
   ): Promise<Demo> {
     const {
       name,
+      description,
       urlPrefix,
       authors,
       revisionNumber,
@@ -42,6 +43,7 @@ export class DemoService extends PrismaCrudService {
     const demo = await this.db.demo.create({
       data: {
         name,
+        description,
         urlPrefix,
         authors,
         revisionNumber,

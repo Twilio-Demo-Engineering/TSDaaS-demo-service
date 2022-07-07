@@ -31,6 +31,10 @@ export class DemoDto implements Partial<Demo> {
   name: string;
 
   @IsString()
+  @ApiPropertyOptional()
+  description: string;
+
+  @IsString()
   @ApiProperty()
   urlPrefix: string;
 
@@ -90,6 +94,10 @@ export class PostDemoDto {
   name: string;
 
   @IsString()
+  @ApiPropertyOptional()
+  description?: string;
+
+  @IsString()
   @ApiProperty()
   urlPrefix: string;
 
@@ -119,6 +127,10 @@ export class UpdateDemoDto {
   @IsString()
   @ApiPropertyOptional()
   name?: string;
+
+  @IsString()
+  @ApiPropertyOptional()
+  description?: string;
 
   @IsString()
   @ApiPropertyOptional()

@@ -82,4 +82,19 @@ describe('PropertyController (e2e)', () => {
         expect(body).toBeTruthy();
       });
   });
+
+  it('/:demoId/safeProperties', () => {
+    // return request(app.getHttpServer())
+    //   .get(`/demo/${demoId}/safeProperties`)
+    //   .expect(200)
+    //   .then(({ body }) => {
+    //     expect(Array.isArray(body)).toBeTruthy();
+    //     //created 4 props but expected 2 from api (not safe properties)
+    //     expect(body.length).toBe(2);
+    //     //no safe properties returned
+    //     expect(body.filter((prop) => prop.safe === true).length).toBe(0);
+    //     savedProperty = body.find((prop) => !prop.safe);
+    //   });
+    return false;
+  });
 });
