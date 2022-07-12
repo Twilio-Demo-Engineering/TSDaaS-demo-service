@@ -117,6 +117,11 @@ Then browse http://localhost:3001/api
 
 ## Twilio
 
-generate crud services and controllers using nestjs-prisma-crud
-https://kepelrs.github.io/nestjs-prisma-crud/getting-started
+### You can generate crud services and controllers using nestjs-prisma-crud
 
+<https://kepelrs.github.io/nestjs-prisma-crud/getting-started>
+
+Example:
+```
+nest g -c nestjs-prisma-crud-schematics crud-resource [resource name]
+```
