@@ -95,7 +95,7 @@ export class PostDemoDto {
 
   @IsString()
   @ApiPropertyOptional()
-  description?: string;
+  description: string;
 
   @IsString()
   @ApiProperty()

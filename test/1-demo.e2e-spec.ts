@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import * as request from 'supertest';
+import request from 'supertest';
 import { UpdateDemoDto } from 'src/demo/model/demo.model';
 import { AppModule } from '../src/app.module';
 import { postDemoDto } from './stub/postDemoDto';

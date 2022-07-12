@@ -1,5 +1,6 @@
 export const postDemoDto = {
   name: 'in offici',
+  description: 'my very cool demo',
   urlPrefix: 'et Lorem deserunt sint',
   authors: 'qui id esse fugiat',
   revisionNumber: 'dolore exercitation officia magna mollit',
