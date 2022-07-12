@@ -117,7 +117,7 @@ Then browse http://localhost:3001/api
 
 ## Twilio
 
-### You can generate crud services and controllers using nestjs-prisma-crud
+### Generating cruds easily
 
 <https://kepelrs.github.io/nestjs-prisma-crud/getting-started>
 
@@ -125,3 +125,20 @@ Example:
 ```
 nest g -c nestjs-prisma-crud-schematics crud-resource [resource name]
 ```
+### E2E testing
+Create a local mysql instace with the following credentials
+
+```
+host: localhost or 127.0.0.1
+port: 3306 (default mysql port)
+user: root
+password: example
+```
+
+Then run e2e tests with this command (with coverage reporting enabled, you can disable by removing '- --coverage')
+
+``` bash
+npm run test:e2e - --coverage 
+```
+
+Done!
