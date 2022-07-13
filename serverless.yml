@@ -40,6 +40,6 @@ custom:
 
   webpack:
     webpackConfig: './webpack-config.js'
-    includeModules: false
+    includeModules: true
     packager: 'npm'
     excludeRegex: .e2e-spec|.map|test

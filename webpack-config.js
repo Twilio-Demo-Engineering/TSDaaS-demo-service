@@ -3,10 +3,17 @@ const path = require('path');
 const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const slsw = require('serverless-webpack');
+const nodeExternals = require('webpack-node-externals');
 
 const WebPackIgnorePlugin = {
   checkResource: function (resource) {
-    const lazyImports = ['class-transformer', 'class-validator'];
+    const lazyImports = [
+      '@nestjs/microservices',
+      '@nestjs/platform-express',
+      'cache-manager',
+      'class-validator',
+      'class-transformer',
+    ];
 
     if (!lazyImports.includes(resource)) return false;
 
@@ -25,7 +32,7 @@ module.exports = {
   target: 'node',
   entry: slsw.lib.entries,
   devtool: 'source-map',
-  externals: [],
+  externals: [nodeExternals()],
   module: {
     rules: [
       {
