@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Demo {
+  id             String         @id @default(uuid())
+  name           String         @unique
+  description    String
+  urlPrefix      String         @unique
+  authors        String
+  revisionNumber String
+  properties     Property[]
+  demoTags       DemoTag[]
+  solutions      DemoSolution[]
+
+  created_at DateTime? @default(now()) @db.DateTime(0)
+  updated_at DateTime? @default(now()) @db.DateTime(0)
+}
+
+model DemoSolution {
+  demoId String
+  name   String
+  demo   Demo   @relation(fields: [demoId], references: [id], onDelete: Cascade)
+
+  @@id([demoId, name])
+}
+
+model Property {
+  id     String  @id @default(uuid())
+  demoId String
+  key    String
+  value  String
+  safe   Boolean @default(false)
+  demo   Demo    @relation(fields: [demoId], references: [id], onDelete: Cascade)
+
+  created_at DateTime? @default(now()) @db.DateTime(0)
+  updated_at DateTime? @default(now()) @db.DateTime(0)
+
+  @@unique([demoId, key], map: "DEMO_DEMO_PROPERTY_NO_DUPLICATE_DEMO_INDEX")
+}
+
+model Tag {
+  id      String    @id @default(uuid())
+  name    String    @unique
+  demoTag DemoTag[]
+
+  created_at DateTime? @default(now()) @db.DateTime(0)
+  updated_at DateTime? @default(now()) @db.DateTime(0)
+}
+
+model DemoTag {
+  id     String @id @default(uuid())
+  demoId String
+  tagId  String
+  demo   Demo   @relation(fields: [demoId], references: [id], onDelete: Cascade)
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  created_at DateTime? @default(now()) @db.DateTime(0)
+  updated_at DateTime? @default(now()) @db.DateTime(0)
+}

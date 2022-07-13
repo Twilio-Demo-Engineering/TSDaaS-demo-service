@@ -1,17 +1,21 @@
-service: serverless-nestjs
+org: lvaladares
+app: tsdaas-demo-service
+service: tsdaas-demo-service
 
 provider:
   name: aws
-  runtime: nodejs12.x
-  region: us-east-1
+  runtime: nodejs14.x
+  region: us-east-2
+  stage: dev
 
 plugins:
+  - serverless-webpack
   - serverless-offline
+  - serverless-sam
 
 package:
   exclude:
     - .git/**
-    - src/**
     - test/**
     - e2e/**
     - nodemon.json
@@ -19,7 +23,7 @@ package:
 
 functions:
   index:
-    handler: dist/index.handler
+    handler: src/index.handler
     events:
     - http:
         cors: true
@@ -29,3 +33,13 @@ functions:
         cors: true
         path: '{proxy+}'
         method: any
+
+custom:
+  optimize:
+    external: ['swagger-ui-dist']
+
+  webpack:
+    webpackConfig: './webpack-config.js'
+    includeModules: true
+    packager: 'npm'
+    excludeRegex: .e2e-spec|.map|test
